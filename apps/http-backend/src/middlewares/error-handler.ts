@@ -1,5 +1,6 @@
 import { ErrorRequestHandler } from "express";
 import { CustomError } from "../errors/custom-error";
+import { Prisma } from "@repo/db";
 
 interface ErrorResponse {
   error: boolean;
@@ -30,6 +31,14 @@ export const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
     statusCode = err.statusCode;
     message = err.message;
     errorCode = err.errorCode || "INTERNAL_SERVER_ERROR";
+  }
+
+  if (err instanceof Prisma.PrismaClientKnownRequestError) {
+    if (err.code === "P2002" && err.meta?.target) {
+      statusCode = 400;
+      message = `Duplicate ${err.meta.target}`;
+      errorCode = "VIOLATING_UNIQUE_CONSTRAINT";
+    }
   }
 
   const errorResponse: ErrorResponse = {

@@ -1,5 +1,9 @@
 import { prisma } from "@repo/db";
-import { signinSchema, signupSchema } from "@repo/validations";
+import {
+  createRoomSchema,
+  signinSchema,
+  signupSchema,
+} from "@repo/validations";
 import { RequestHandler } from "express";
 import bcrypt from "bcryptjs";
 import { CustomError } from "../errors/custom-error";
@@ -14,7 +18,7 @@ const signup: RequestHandler = async (req, res, next) => {
 
     const hashedPassword = await bcrypt.hash(parsedBody.data.password, 10);
 
-    prisma.user.create({
+    const createdUser = await prisma.user.create({
       data: {
         email: parsedBody.data.email,
         username: parsedBody.data.username,
@@ -22,8 +26,13 @@ const signup: RequestHandler = async (req, res, next) => {
       },
     });
 
-    res.status(201).json({ error: false, message: "User signup successfull" });
+    res.status(201).json({
+      error: false,
+      message: "User signup successful",
+      user: createdUser,
+    });
   } catch (error) {
+    console.log(error);
     next(error);
   }
 };
@@ -31,14 +40,15 @@ const signup: RequestHandler = async (req, res, next) => {
 const login: RequestHandler = async (req, res, next) => {
   try {
     const parsedBody = signinSchema.safeParse(req.body);
-    if (!parsedBody.success) return;
+    if (!parsedBody.success)
+      return next(new CustomError(400, parsedBody.error.message));
     const foundUser = await prisma.user.findFirst({
       where: { email: parsedBody.data.email },
     });
 
     if (!foundUser) return next(new CustomError(404, "User not found"));
 
-    const isPasswordMatch = bcrypt.compare(
+    const isPasswordMatch = await bcrypt.compare(
       parsedBody.data.password,
       foundUser?.password,
     );
@@ -48,10 +58,77 @@ const login: RequestHandler = async (req, res, next) => {
 
     const token = jwt.sign({ userId: foundUser.id }, "secret_key");
 
-    res.status(200).json({ error: false, message: "Login successful", token });
+    res.status(200).json({
+      error: false,
+      message: "Login successful",
+      token,
+      user: foundUser,
+    });
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
+
+const createRoom: RequestHandler = async (req, res, next) => {
+  try {
+    const parsedBody = createRoomSchema.safeParse(req.body);
+    const userId = req.userId;
+    if (!userId) return next(new CustomError(401, "Unauthorized"));
+    if (!parsedBody.success)
+      return next(new CustomError(400, parsedBody.error.message));
+
+    const createdRoom = await prisma.room.create({
+      data: {
+        name: parsedBody.data.name,
+        user_id: userId,
+      },
+    });
+
+    res.status(201).json({
+      error: false,
+      message: "Room created successfully",
+      room: createdRoom,
+    });
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
+
+const getRooms: RequestHandler = async (req, res, next) => {
+  try {
+    const userId = req.userId;
+    if (!userId) return next(new CustomError(401, "Unauthorized"));
+
+    const rooms = await prisma.room.findMany({
+      where: { user_id: userId },
+    });
+    res.status(200).json({
+      error: false,
+      rooms,
+    });
   } catch (error) {
     next(error);
   }
 };
 
-export { signup, login };
+const getRoomShapes: RequestHandler = async (req, res, next) => {
+  try {
+    const roomName = req.params.room_name;
+    if (!roomName) return next(new CustomError(400, "Room name is required"));
+
+    const shapes = await prisma.shape.findMany({
+      where: { room_id: roomName },
+    });
+
+    res.status(200).json({
+      error: false,
+      shapes,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export { signup, login, createRoom, getRooms, getRoomShapes };

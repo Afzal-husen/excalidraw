@@ -4,7 +4,7 @@
   "main": "dist/index.js",
   "scripts": {
     "start": "node dist/index.js",
-    "dev": "tsc -b && node dist/index.js",
+    "dev": "nodemon",
     "build": "tsc -b"
   },
   "keywords": [],
@@ -13,9 +13,10 @@
   "description": "",
   "devDependencies": {
     "@repo/typescript-config": "workspace:*",
-    "@types/bcryptjs": "^3.0.0",
     "@types/express": "^5.0.1",
-    "@types/jsonwebtoken": "^9.0.9"
+    "@types/jsonwebtoken": "^9.0.9",
+    "nodemon": "^3.1.9",
+    "ts-node": "^10.9.2"
   },
   "dependencies": {
     "@repo/db": "workspace:*",

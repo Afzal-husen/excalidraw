@@ -21,5 +21,12 @@ export const signinSchema = z.object({
     .min(6, { message: "Password must be atleast 6 characters" }),
 });
 
+export const createRoomSchema = z.object({
+  name: z
+    .string()
+    .min(3, { message: "Room name must be atleast 3 characters" }),
+});
+
 export type Tsignup = z.infer<typeof signupSchema>;
 export type Tsignin = z.infer<typeof signinSchema>;
+export type TcreateRoom = z.infer<typeof createRoomSchema>;
