@@ -1,1 +1,1 @@
-{"root":["./src/index.ts","./src/controllers/user.ts","./src/errors/custom-error.ts","./src/middlewares/error-handler.ts","./src/routes/index.ts"],"version":"5.8.2"}
+{"root":["./src/index.ts","./src/controllers/user.ts","./src/errors/custom-error.ts","./src/middlewares/auth.ts","./src/middlewares/error-handler.ts","./src/routes/index.ts","./src/types/express.d.ts"],"version":"5.8.2"}
