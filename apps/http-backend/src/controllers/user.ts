@@ -11,10 +11,11 @@ import jwt from "jsonwebtoken";
 
 const signup: RequestHandler = async (req, res, next) => {
   try {
+    console.log(req.body);
     const body = req.body;
     const parsedBody = signupSchema.safeParse(body);
     if (!parsedBody.success)
-      return next(new CustomError(400, parsedBody.error.message));
+      return next(new CustomError(400, "Invalid inputs"));
 
     const hashedPassword = await bcrypt.hash(parsedBody.data.password, 10);
 
@@ -41,7 +42,7 @@ const login: RequestHandler = async (req, res, next) => {
   try {
     const parsedBody = signinSchema.safeParse(req.body);
     if (!parsedBody.success)
-      return next(new CustomError(400, parsedBody.error.message));
+      return next(new CustomError(400, "Invalid inputs"));
     const foundUser = await prisma.user.findFirst({
       where: { email: parsedBody.data.email },
     });

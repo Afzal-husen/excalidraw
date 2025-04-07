@@ -62,14 +62,8 @@ const addShape = async (
 };
 
 wss.on("connection", async (socket, request) => {
-  const authorization = request.headers.authorization;
-  if (!authorization || !authorization.startsWith("Bearer ")) {
-    console.log("User not found");
-    socket.close();
-    return;
-  }
-
-  const token = authorization.split(" ")[1];
+  const queryParams = new URLSearchParams(request.url?.split("?")[1]);
+  const token = queryParams.get("token");
 
   if (!token) {
     console.log("User not found");
@@ -102,7 +96,6 @@ wss.on("connection", async (socket, request) => {
         return;
       }
       user.rooms.push(room_name);
-      console.log("User joined room", room_name);
     } else if (type === "leave_room") {
       if (!user) {
         return;
