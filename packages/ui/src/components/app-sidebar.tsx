@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 import {
   BookOpen,
   Bot,
@@ -12,12 +12,12 @@ import {
   Send,
   Settings2,
   SquareTerminal,
-} from "lucide-react"
+} from "lucide-react";
 
-import { NavMain } from "@repo/ui/components/nav-main"
-import { NavProjects } from "@repo/ui/components/nav-projects"
-import { NavSecondary } from "@repo/ui/components/nav-secondary"
-import { NavUser } from "@repo/ui/components/nav-user"
+import { NavMain } from "@repo/ui/components/nav-main";
+import { NavProjects } from "@repo/ui/components/nav-projects";
+import { NavSecondary } from "@repo/ui/components/nav-secondary";
+import { NavUser } from "@repo/ui/components/nav-user";
 import {
   Sidebar,
   SidebarContent,
@@ -26,7 +26,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@repo/ui/components/shadcn/sidebar"
+} from "@repo/ui/components/shadcn/sidebar";
 
 const data = {
   user: {
@@ -150,7 +150,7 @@ const data = {
       icon: Map,
     },
   ],
-}
+};
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
@@ -181,5 +181,5 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavUser user={data.user} />
       </SidebarFooter>
     </Sidebar>
-  )
+  );
 }

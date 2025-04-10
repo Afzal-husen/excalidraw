@@ -1,31 +1,27 @@
+import CanvasCard from "@/components/canvas-card";
 import PageHeader from "@/components/page-header";
-import { AppSidebar } from "@repo/ui/components/app-sidebar";
-
-
-import {
-  SidebarInset,
-  SidebarProvider,
-} from "@repo/ui/components/shadcn/sidebar";
+import { Button } from "@repo/ui/components/shadcn/button";
+import { Icons } from "@repo/ui/components/icons";
+import MainSidebar from "@repo/ui/components/main-sidebar";
 
 export default function CanvasPage() {
   return (
-    <SidebarProvider>
-      <AppSidebar />
-      <SidebarInset>
-        <PageHeader
-          title="All Canvas"
-          breadcrumb={[{ label: "Canvas", href: "/canvas" }]}
-        />
+    <MainSidebar>
+      <PageHeader
+        title="All Canvas"
+        breadcrumb={[{ label: "Canvas", href: "/canvas" }]}
+      />
 
-        {/* <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-          <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-            <div className="aspect-video rounded-xl bg-muted/50" />
-            <div className="aspect-video rounded-xl bg-muted/50" />
-            <div className="aspect-video rounded-xl bg-muted/50" />
-          </div>
-          <div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min" />
-        </div> */}
-      </SidebarInset>
-    </SidebarProvider>
+      <Button className="w-fit ml-auto">
+        <Icons.Plus className="w-4 h-4" />
+        Create
+      </Button>
+
+      <div className="p-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {Array.from({ length: 10 }).map((_, index) => (
+          <CanvasCard key={index} />
+        ))}
+      </div>
+    </MainSidebar>
   );
 }
