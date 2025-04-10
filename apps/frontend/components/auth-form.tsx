@@ -18,6 +18,9 @@ import * as z from "zod";
 import Link from "next/link";
 import { useTransition } from "react";
 import { signIn, signUp } from "@/lib/services/auth";
+import { useRouter } from "next/navigation";
+import { routes } from "@/lib/contants";
+
 const signInSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
   password: z.string().min(8, "Password must be at least 8 characters"),
@@ -55,6 +58,7 @@ type AuthFormProps = {
 
 const AuthForm = ({ type }: AuthFormProps) => {
   const [isPending, startTransition] = useTransition();
+  const router = useRouter();
   const form = useForm<SignUpFormValues | SignInFormValues>({
     resolver: zodResolver(type === "signup" ? signUpSchema : signInSchema),
     defaultValues:
@@ -79,7 +83,9 @@ const AuthForm = ({ type }: AuthFormProps) => {
         if (error) {
           toast({ type: "error", message });
         } else {
+          form.reset();
           toast({ type: "success", message });
+          router.push(routes.login);
         }
       });
     } else {
@@ -91,6 +97,8 @@ const AuthForm = ({ type }: AuthFormProps) => {
         } else {
           toast({ type: "success", message });
           localStorage.setItem("token", token);
+          form.reset();
+          router.push(routes.home);
         }
       });
     }
