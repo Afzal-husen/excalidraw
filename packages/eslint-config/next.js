@@ -5,6 +5,7 @@ import pluginReactHooks from "eslint-plugin-react-hooks";
 import pluginReact from "eslint-plugin-react";
 import globals from "globals";
 import pluginNext from "@next/eslint-plugin-next";
+import pluginUnusedImports from "eslint-plugin-unused-imports";
 import { config as baseConfig } from "./base.js";
 
 /**
@@ -29,10 +30,21 @@ export const nextJsConfig = [
   {
     plugins: {
       "@next/next": pluginNext,
+      "unused-imports": pluginUnusedImports,
     },
     rules: {
       ...pluginNext.configs.recommended.rules,
       ...pluginNext.configs["core-web-vitals"].rules,
+      "unused-imports/no-unused-imports": "error",
+      "unused-imports/no-unused-vars": [
+        "warn",
+        {
+          vars: "all",
+          varsIgnorePattern: "^_",
+          args: "after-used",
+          argsIgnorePattern: "^_",
+        },
+      ],
     },
   },
   {
