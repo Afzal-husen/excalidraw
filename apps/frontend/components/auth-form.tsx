@@ -118,8 +118,7 @@ const AuthForm = ({ type }: AuthFormProps) => {
               : "Don't have an account?"}{" "}
             <Link
               href={type === "signup" ? "/login" : "/signup"}
-              className="font-medium text-blue-600 hover:text-blue-500"
-            >
+              className="font-medium text-blue-600 hover:text-blue-500">
               {type === "signup" ? "Sign in" : "Sign up"}
             </Link>
           </p>
@@ -128,8 +127,7 @@ const AuthForm = ({ type }: AuthFormProps) => {
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="mt-8 space-y-6"
-          >
+            className="mt-8 space-y-6">
             {type === "signup" ? (
               <FormField
                 control={form.control}
