@@ -58,12 +58,12 @@ const CreateCanvas = () => {
           message,
         });
       } else {
+        form.reset();
+        router.push(`/canvas/${room.id}`);
         toast({
           type: "success",
           message,
         });
-        form.reset();
-        router.push(`/canvas/${room.id}`);
       }
     });
   };
