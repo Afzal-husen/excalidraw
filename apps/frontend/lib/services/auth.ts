@@ -6,6 +6,7 @@ const signUp = async (username: string, email: string, password: string) => {
       headers: {
         "Content-Type": "application/json",
       },
+      credentials: "include",
     });
     if (!response.ok) {
       const errorResponse = await response.json();
@@ -36,7 +37,9 @@ const signIn = async (email: string, password: string) => {
       headers: {
         "Content-Type": "application/json",
       },
+      credentials: "include",
     });
+
     if (!response.ok) {
       const errorResponse = await response.json();
       return {

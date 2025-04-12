@@ -1,13 +1,21 @@
 import { getToken } from "../get-token";
 import { Room } from "@repo/db";
-const createCanvas = async (name: string, token: string) => {
+const createCanvas = async (name: string) => {
   try {
+    const token = await getToken();
+    if (!token) {
+      return {
+        error: true,
+        message: "Please login to create a room",
+      };
+    }
     const response = await fetch("http://localhost:3001/api/v1/room", {
       method: "POST",
       body: JSON.stringify({ name }),
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
+        credentials: "include",
       },
     });
     if (!response.ok) {
@@ -34,7 +42,8 @@ const createCanvas = async (name: string, token: string) => {
 
 const getRooms = async () => {
   try {
-    const token = await getToken();
+    const token = getToken();
+    console.log({ token });
     if (!token) {
       return {
         error: true,
@@ -44,6 +53,8 @@ const getRooms = async () => {
     const response = await fetch("http://localhost:3001/api/v1/rooms", {
       headers: {
         Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+        credentials: "include",
       },
     });
     if (!response.ok) {

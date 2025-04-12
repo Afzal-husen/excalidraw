@@ -6,7 +6,7 @@ import { getRooms } from "@/lib/services/room";
 import { Room } from "@repo/db";
 export default async function CanvasPage() {
   const { error, message, rooms } = await getRooms();
-
+  console.log({ error, message, rooms });
   if (error || !rooms) {
     return <div>{message}</div>;
   }

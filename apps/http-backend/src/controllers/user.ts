@@ -59,18 +59,11 @@ const login: RequestHandler = async (req, res, next) => {
 
     const token = jwt.sign({ userId: foundUser.id }, "secret_key");
 
-    res
-      .cookie("token", token, {
-        httpOnly: true,
-        maxAge: 1000 * 60 * 60 * 24 * 30, // 30 days
-      })
-      .status(200)
-      .json({
-        error: false,
-        message: "Login successful",
-        token,
-        user: foundUser,
-      });
+    res.status(200).json({
+      error: false,
+      message: "Login successful",
+      token,
+    });
   } catch (error) {
     console.log(error);
     next(error);

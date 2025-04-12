@@ -95,10 +95,10 @@ const AuthForm = ({ type }: AuthFormProps) => {
         if (error) {
           toast({ type: "error", message });
         } else {
-          toast({ type: "success", message });
-          localStorage.setItem("token", token);
           form.reset();
-          router.push(routes.home);
+          router.push(routes.canvas);
+          localStorage.setItem("token", token);
+          toast({ type: "success", message });
         }
       });
     }
